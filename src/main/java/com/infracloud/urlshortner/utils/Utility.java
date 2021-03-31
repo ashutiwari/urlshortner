@@ -36,7 +36,7 @@ public class Utility {
 	}
 	
 	
-	public static void writeMapIntoTextFile(HashMap<String, String> map, String textFilePath) throws FileNotFoundException {
+	public static void writeMapIntoTextFile(HashMap<String, String> map, String textFilePath) throws IOException {
         File file = new File(textFilePath);
         
         BufferedWriter bf = null;
@@ -77,7 +77,6 @@ public class Utility {
 	public static HashMap<String, String> readTextFileIntoMap(String textFilePath) throws IOException
 	{
 	    HashMap<String, String> map = new HashMap<String, String>();
-
 	    String line;
 	    BufferedReader reader = null;
 	   

@@ -1,0 +1,5 @@
+FROM openjdk:8
+ADD target/urlshortner.jar urlshortner.jar
+RUN touch /shorted_url.txt
+EXPOSE 8085
+ENTRYPOINT ["java","-jar","urlshortner.jar"]
