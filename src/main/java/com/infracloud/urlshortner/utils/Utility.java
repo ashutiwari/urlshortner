@@ -3,6 +3,7 @@ package com.infracloud.urlshortner.utils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class Utility {
 		return UUID.randomUUID().toString();
 	}
 
+	
 	public static boolean isValidUrl(String url) {
 		boolean validUrl = false;
 		String[] schemes = {"http","https"};
@@ -34,7 +36,7 @@ public class Utility {
 	}
 	
 	
-	public static void writeMapIntoTextFile(HashMap<String, String> map, String textFilePath) {
+	public static void writeMapIntoTextFile(HashMap<String, String> map, String textFilePath) throws FileNotFoundException {
         File file = new File(textFilePath);
         
         BufferedWriter bf = null;
@@ -54,6 +56,9 @@ public class Utility {
   
             bf.flush();
         }
+        catch (FileNotFoundException e) {
+        	throw new FileNotFoundException("File Not Found Exception");
+        }
         catch (IOException e) {
             e.printStackTrace();
         }
@@ -64,6 +69,7 @@ public class Utility {
                 bf.close();
             }
             catch (Exception e) {
+            	
             }
         }
     }
@@ -73,22 +79,39 @@ public class Utility {
 	    HashMap<String, String> map = new HashMap<String, String>();
 
 	    String line;
-	    BufferedReader reader = new BufferedReader(new FileReader(textFilePath));
-	    while ((line = reader.readLine()) != null)
-	    {
-	        String[] parts = line.split("=", 2);
-	        if (parts.length >= 2)
-	        {
-	            String key = parts[0];
-	            String value = parts[1];
-	            map.put(key, value);
-	        } else {
-	            System.out.println("ignoring line: " + line);
-	        }
-	    }
-	    reader.close();
-	    return map;
+	    BufferedReader reader = null;
+	   
+	    try {
+	    	 reader = new BufferedReader(new FileReader(textFilePath));
+		     while ((line = reader.readLine()) != null)
+			    {
+			        String[] parts = line.split("=", 2);
+			        if (parts.length >= 2)
+			        {
+			            String key = parts[0];
+			            String value = parts[1];
+			            map.put(key, value);
+			        } else {
+			            System.out.println("ignoring line: " + line);
+			        }
+			    }
+			    return map;
+	
+	   }catch (FileNotFoundException e) {
+        	throw new FileNotFoundException("File Not Found");
+        }
+        finally {
+  
+            try {
+  
+            	reader.close();
+            }
+            catch (Exception e) {
+            	
+            }
+        }
 	}
+	   
 	
 	
 	public static String getKeyOfHashMapByValue(HashMap<String, String> map, String value) {

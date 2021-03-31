@@ -34,7 +34,12 @@ public class URLShortnerService {
 			logger.info("Url:"+ shortedURLRequest.getUrl() +" is valid");
 			ShortedURL shortedURL = new ShortedURL();
 
-			
+			if(filepath==null && baseURL==null) {
+				// for unit tests execution
+				
+				filepath = "src/test/java/test_shorted_url.txt";
+				baseURL = "http://localhost:8080/";
+			}
 			HashMap<String, String>  allExistingShortedURL  = Utility.readTextFileIntoMap(filepath);
 			
 			if(allExistingShortedURL.containsKey(shortedURLRequest.getUrl())) {
@@ -60,6 +65,13 @@ public class URLShortnerService {
 	
 	public ActualURL getUrlByShortedURL(String shortedURL) throws NotFoundException, IOException {
 		
+
+		if(filepath==null && baseURL==null) {
+			// for unit tests execution
+			
+			filepath = "src/test/java/test_shorted_url.txt";
+			baseURL = "http://localhost:8080/";
+		}
 		
 		HashMap<String, String>  allExistingShortedURL  = Utility.readTextFileIntoMap(filepath);
 
